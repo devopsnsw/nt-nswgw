@@ -47,19 +47,21 @@ const verifyToken = (req, res, next) => {
 // post nsw with verify token
 app.post('/nsw', verifyToken, (req, res) => {
   console.log(req.body);
-  res.status(201).json({ message: 'ok' });
+  res.status(201).json({ messageId:req.body.messageId, code:0, status:"success" });
 });
 
 
-app.post('/login', (req, res) => {
+app.post('/api/auth/reqToken', (req, res) => {
 
 
   if (req.body.username === user.username && req.body.password === user.password) {
     const accessToken = jwt.sign({ username: user.username }, access_secret, { expiresIn: '1h' });
     const refreshToken = jwt.sign({ username: user.username }, refresh_secret);
     res.json({
-      accessToken,
-      refreshToken
+      code:0,
+      status:"success",
+      token: accessToken,
+      
     });
   } else {
     res.send('Username or password incorrect');
