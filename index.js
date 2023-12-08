@@ -3,7 +3,7 @@ const bodyParser = require('body-parser');
 const jwt = require('jsonwebtoken');
 const { verify } = require('crypto');
 const app = express();
-const port = 3001;
+const port = 3002;
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
