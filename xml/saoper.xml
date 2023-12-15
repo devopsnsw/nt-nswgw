@@ -1,0 +1,2 @@
+<?xml version="1.0" ?>
+<CustomsResponse xmlns="http://ebxml.customs.go.th/XMLSchema/CustomsResponse_9_00"><DocumentControl><MessageType>SAOA</MessageType><ReferenceNumber>DOPS700002114</ReferenceNumber><RegistrationID>TH0109940001630110000010021P8</RegistrationID><DocumentDetail><ManifestAccept><ReceivedControlNumber>23661215100000030</ReceivedControlNumber><PortCode>THLCH</PortCode><DocumentNumber>0105553056119</DocumentNumber><Message>SHIP AGENT OPERATOR ACCEPT</Message></ManifestAccept></DocumentDetail></DocumentControl></CustomsResponse> 

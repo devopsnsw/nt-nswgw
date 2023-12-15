@@ -1,0 +1,2 @@
+<?xml version="1.0" ?>
+<CustomsResponse xmlns="http://ebxml.customs.go.th/XMLSchema/CustomsResponse_9_00"><DocumentControl><MessageType>CAMA</MessageType><ReferenceNumber>DLQZ800000537</ReferenceNumber><RegistrationID>TH0109940001630110000010021P8</RegistrationID><DocumentDetail><ManifestAccept><ReceivedControlNumber>22660914100000067</ReceivedControlNumber><PortCode>THBKK</PortCode><DocumentNumber>0105551133949</DocumentNumber><Message>MMAN : CANCEL MASTER SEA CARGO MANIFEST ACCEPT</Message></ManifestAccept></DocumentDetail></DocumentControl></CustomsResponse> 

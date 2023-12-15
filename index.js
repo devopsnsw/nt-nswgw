@@ -2,6 +2,9 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const jwt = require('jsonwebtoken');
 const { verify } = require('crypto');
+const fs = require('fs');
+const uuid = require('uuid');
+
 const app = express();
 const port = 3002;
 
@@ -15,6 +18,21 @@ const user = {
 
 const access_secret='access_secret';
 const refresh_secret='refresh_secret';
+const vsed = fs.readFileSync('xml/vsed.xml', 'utf8');
+const saoper = fs.readFileSync('xml/saoper.xml', 'utf8');
+const mman = fs.readFileSync('xml/mman.xml', 'utf8');
+const clis = fs.readFileSync('xml/clis.xml', 'utf8');
+const canman = fs.readFileSync('xml/canman.xml', 'utf8');
+// vsed to base64
+
+const vsed_base64 = Buffer.from(vsed).toString('base64');
+const saoper_base64 = Buffer.from(saoper).toString('base64');
+const mman_base64 = Buffer.from(mman).toString('base64');
+const clis_base64 = Buffer.from(clis).toString('base64');
+const canman_base64 = Buffer.from(canman).toString('base64');
+
+
+
 
 
 /*
@@ -46,7 +64,31 @@ const verifyToken = (req, res, next) => {
 
 // post nsw with verify token
 app.post('/nsw', verifyToken, (req, res) => {
-  console.log(req.body);
+  //console.log(req.body);
+
+  const action = "";
+  const rs ="";
+  switch(req.body.action){
+    case "VSED": action = "VSED_VSEA"; rs=vsed_base64; break;
+    case "SAOPER": action = "SAOPER_SAOA"; rs=saoper_base64;break;
+    case "MMAN": action = "MMAN_MMAA"; rs=mman_base64; break;
+    case "CLIS": action = "CLIS_CLSA"; rs=clis_base64;break;
+    case "CANMAN": action = "CANMAN_CAMA"; rs=canman_base64; break;
+  }
+
+
+  const response = {
+    messageId: "THNSW_Dev@"+uuid.v4(),
+    fromId: req.body.toId,
+    toId: req.body.fromId,
+    action: action,
+    serviceName: req.body.serviceName,
+    conversationId: req.body.conversationId,    
+    timestamp: new Date().toISOString(),
+    reftoMessageId: req.body.messageId,
+    payload: rs,
+  };
+  console.log(response);
   res.status(201).json({ messageId:req.body.messageId, code:0, status:"success" });
 });
 
@@ -55,7 +97,7 @@ app.post('/api/auth/reqToken', (req, res) => {
 
 
   if (req.body.username === user.username && req.body.password === user.password) {
-    const accessToken = jwt.sign({ username: user.username }, access_secret, { expiresIn: '1h' });
+    const accessToken = jwt.sign({ username: user.username }, access_secret, { expiresIn: '1d' });
     const refreshToken = jwt.sign({ username: user.username }, refresh_secret);
     res.json({
       code:0,

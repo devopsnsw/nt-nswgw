@@ -1,0 +1,2 @@
+<?xml version="1.0" ?>
+<CustomsResponse xmlns="http://ebxml.customs.go.th/XMLSchema/CustomsResponse_9_00"><DocumentControl><MessageType>VSEA</MessageType><ReferenceNumber>DTDM600009496</ReferenceNumber><RegistrationID>TH0109940001630110000010021P8</RegistrationID><DocumentDetail><ManifestAccept><ReceivedControlNumber>23661215100000049</ReceivedControlNumber><PortCode>THRNN</PortCode><DocumentNumber>AUNG THU ZAW-555</DocumentNumber><Message>VESSEL CLOSED / ACTUAL DATE ACCEPT</Message></ManifestAccept></DocumentDetail></DocumentControl></CustomsResponse> 
