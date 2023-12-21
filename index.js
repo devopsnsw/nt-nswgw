@@ -4,6 +4,8 @@ const jwt = require('jsonwebtoken');
 const { verify } = require('crypto');
 const fs = require('fs');
 const uuid = require('uuid');
+const jszip = require('jszip');
+const axios = require('axios');
 
 const app = express();
 const port = 3002;
@@ -18,6 +20,7 @@ const user = {
 
 const access_secret='access_secret';
 const refresh_secret='refresh_secret';
+
 const vsed = fs.readFileSync('xml/vsed.xml', 'utf8');
 const saoper = fs.readFileSync('xml/saoper.xml', 'utf8');
 const mman = fs.readFileSync('xml/mman.xml', 'utf8');
@@ -33,21 +36,37 @@ const canman_base64 = Buffer.from(canman).toString('base64');
 
 
 
+async function zipxml(xmlbase64){
+
+  const zip = new jszip();
+  zip.file('xml',xmlbase64);
+  const xmlbase64zip = await zip.generateAsync({type:"base64"});
+  //console.log(xmlbase64zip);
+  return xmlbase64zip;
+  
+      
+  }
+
+  async function unzipxml(xmlbase64zip){
+    const zip = new jszip();
+    const zipxml = await zip.loadAsync(xmlbase64zip,{base64:true});
+    const base64_xml = await zipxml.file('xml').async('string');
+    //base64 to xml
+    //const xml = Buffer.from(base64_xml,'base64').toString('utf-8');
+    //console.log(xml);
+    return base64_xml;
+
+}   
 
 
-/*
-app.post('/nsw', (req, res) => {
-  console.log(req.body);
-  res.status(201).json({ message: 'ok' });
-});
-*/
+
 
 // verify token
 const verifyToken = (req, res, next) => {
   const authHeader = req.headers['authorization'];
   const token = authHeader && authHeader.split(' ')[1];
 
-  console.log(token);
+  //console.log(token);
 
   if (!token) {
     res.sendStatus(401);
@@ -56,6 +75,7 @@ const verifyToken = (req, res, next) => {
   jwt.verify(token, access_secret, (err, user) => {
     if (err) {
       res.sendStatus(403);
+      console.log(err);
     }
 
     next();
@@ -63,32 +83,59 @@ const verifyToken = (req, res, next) => {
 };
 
 // post nsw with verify token
-app.post('/nsw', verifyToken, (req, res) => {
-  //console.log(req.body);
+app.post('/nsw', verifyToken, async (req, res) => {
 
-  const action = "";
-  const rs ="";
-  switch(req.body.action){
-    case "VSED": action = "VSED_VSEA"; rs=vsed_base64; break;
-    case "SAOPER": action = "SAOPER_SAOA"; rs=saoper_base64;break;
-    case "MMAN": action = "MMAN_MMAA"; rs=mman_base64; break;
-    case "CLIS": action = "CLIS_CLSA"; rs=clis_base64;break;
-    case "CANMAN": action = "CANMAN_CAMA"; rs=canman_base64; break;
+ let action = "";
+ let payload = "";
+
+  if(req.body.action == "VSED"){
+    action = "VSED_VSEA";
+    payload = await zipxml(vsed_base64);
+   
   }
-
+  else if(req.body.action == "SAOPER"){
+    action = "SAOPER_SAOA";
+    payload = await zipxml(saoper_base64);
+  }
+  else if(req.body.action == "MMAN"){
+    action = "MMAN_MMAA";
+    payload = await zipxml(mman_base64);
+  }
+  else if(req.body.action == "CLIS"){
+    action = "CLIS_CLSA";
+    payload = await zipxml(clis_base64);
+  }
+  else if(req.body.action == "CANMAN"){
+    action = "CANMAN_CAMA";
+    payload = await zipxml(canman_base64);
+  }
+  
 
   const response = {
     messageId: "THNSW_Dev@"+uuid.v4(),
     fromId: req.body.toId,
     toId: req.body.fromId,
-    action: action,
+    action:action,
     serviceName: req.body.serviceName,
     conversationId: req.body.conversationId,    
     timestamp: new Date().toISOString(),
-    reftoMessageId: req.body.messageId,
-    payload: rs,
+    refToMessageId: req.body.messageId,
+    payload: payload,
   };
-  console.log(response);
+  //console.log(response);
+
+  // Post to http://localhost:3001/response with token
+  const token ="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwicGFzc3dvcmQiOiJhZG1pbiIsImlhdCI6MTcwMzA2MzMwNiwiZXhwIjoxNzAzMDY2OTA2fQ.2Wod4HAt8tpZ7sIbpaDibRRRPdIZMDyJqS-fgR5wAL8";
+  const url = "http://localhost:3001/response";
+  const config = {
+    headers: { Authorization: `Bearer ${token}` }
+  };
+  const rs = await axios.post(url, response, config);
+  console.log(rs.data);
+
+
+
+  
   res.status(201).json({ messageId:req.body.messageId, code:0, status:"success" });
 });
 
@@ -157,6 +204,8 @@ app.post('/refresh', (req, res) => {
     });
   });
 });
+
+
 
 
 
