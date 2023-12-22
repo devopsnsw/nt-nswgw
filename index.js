@@ -125,7 +125,7 @@ app.post('/nsw', verifyToken, async (req, res) => {
   //console.log(response);
 
   // Post to http://localhost:3001/response with token
-  const token ="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwicGFzc3dvcmQiOiJhZG1pbiIsImlhdCI6MTcwMzA2MzMwNiwiZXhwIjoxNzAzMDY2OTA2fQ.2Wod4HAt8tpZ7sIbpaDibRRRPdIZMDyJqS-fgR5wAL8";
+  const token ="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im5zd2FwaSIsInBhc3N3b3JkIjoibnN3YXBpIiwiaWF0IjoxNzAzMjIwMzYxLCJleHAiOjE3MDMzMDY3NjF9.JKakGT3UOYrKiR1bXmpQ5G5EOQTEWLab1dQpk1SIPP4";
   const url = "http://localhost:3001/response";
   const config = {
     headers: { Authorization: `Bearer ${token}` }
