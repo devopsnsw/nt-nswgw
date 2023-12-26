@@ -122,11 +122,11 @@ app.post('/nsw', verifyToken, async (req, res) => {
     refToMessageId: req.body.messageId,
     payload: payload,
   };
-  //console.log(response);
+  console.log(response);
 
   // Post to http://localhost:3001/response with token
-  const token ="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im5zd2FwaSIsInBhc3N3b3JkIjoibnN3YXBpIiwiaWF0IjoxNzAzMjIwMzYxLCJleHAiOjE3MDMzMDY3NjF9.JKakGT3UOYrKiR1bXmpQ5G5EOQTEWLab1dQpk1SIPP4";
-  const url = "http://localhost:3001/response";
+  const token ="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im5zd2FwaSIsInBhc3N3b3JkIjoibnN3YXBpIiwiaWF0IjoxNzAzNDc0MjcwLCJleHAiOjE3MDM1NjA2NzB9._Ek9aAKBSXcFLtGAVfz-k-5quSw53J-5RCxACQEbPIs";
+  const url = "http://localhost:3001/manifest-receiver/api/v1/response";
   const config = {
     headers: { Authorization: `Bearer ${token}` }
   };
