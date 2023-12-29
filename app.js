@@ -125,10 +125,27 @@ app.post('/nsw', verifyToken, async (req, res) => {
   console.log(response);
 
   // Post to http://localhost:3001/response with token
-  const token ="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im5zd2FwaSIsInBhc3N3b3JkIjoibnN3YXBpIiwiaWF0IjoxNzAzNDc0MjcwLCJleHAiOjE3MDM1NjA2NzB9._Ek9aAKBSXcFLtGAVfz-k-5quSw53J-5RCxACQEbPIs";
+  const token_url = "http://localhost:3001/manifest-receiver/api/v1/token";
+  const conf = {
+    headers:{
+      'Content-Type': 'application/json'
+    }
+  };
+  const data = {
+    username: 'nswapi',
+    password: 'nswapi'
+  };
+  const token_rs = await axios.post(token_url, data, conf);
+  const token = token_rs.data.token;
+  //console.log(token);
+  
+
+
+  //const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im5zd2FwaSIsInBhc3N3b3JkIjoibnN3YXBpIiwiaWF0IjoxNzAzODE5ODg1LCJleHAiOjE3MDM5MDYyODV9.3Zkf-QskbbBdiYPS1S3XhB3KhW7IwLFaElco4F5idZI";
+
   const url = "http://localhost:3001/manifest-receiver/api/v1/response";
   const config = {
-    headers: { Authorization: `Bearer ${token}` }
+    headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' }
   };
   const rs = await axios.post(url, response, config);
   console.log(rs.data);
