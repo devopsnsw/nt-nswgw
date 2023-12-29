@@ -125,7 +125,7 @@ app.post('/nsw', verifyToken, async (req, res) => {
   console.log(response);
 
   // Post to http://localhost:3001/response with token
-  const token_url = "http://localhost:3001/manifest-receiver/api/v1/token";
+  const token_url = "http://nt-manifest-receiver:3001/manifest-receiver/api/v1/token";
   const conf = {
     headers:{
       'Content-Type': 'application/json'
@@ -143,7 +143,7 @@ app.post('/nsw', verifyToken, async (req, res) => {
 
   //const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im5zd2FwaSIsInBhc3N3b3JkIjoibnN3YXBpIiwiaWF0IjoxNzAzODE5ODg1LCJleHAiOjE3MDM5MDYyODV9.3Zkf-QskbbBdiYPS1S3XhB3KhW7IwLFaElco4F5idZI";
 
-  const url = "http://localhost:3001/manifest-receiver/api/v1/response";
+  const url = "http://nt-manifest-receiver:3001/manifest-receiver/api/v1/response";
   const config = {
     headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' }
   };
