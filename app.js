@@ -51,9 +51,7 @@ async function zipxml(xmlbase64){
     const zip = new jszip();
     const zipxml = await zip.loadAsync(xmlbase64zip,{base64:true});
     const base64_xml = await zipxml.file('xml').async('string');
-    //base64 to xml
-    //const xml = Buffer.from(base64_xml,'base64').toString('utf-8');
-    //console.log(xml);
+
     return base64_xml;
 
 }   
@@ -66,7 +64,7 @@ const verifyToken = (req, res, next) => {
   const authHeader = req.headers['authorization'];
   const token = authHeader && authHeader.split(' ')[1];
 
-  //console.log(token);
+
 
   if (!token) {
     res.sendStatus(401);
@@ -137,11 +135,8 @@ app.post('/nsw', verifyToken, async (req, res) => {
   };
   const token_rs = await axios.post(token_url, data, conf);
   const token = token_rs.data.token;
-  //console.log(token);
   
-
-
-  //const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im5zd2FwaSIsInBhc3N3b3JkIjoibnN3YXBpIiwiaWF0IjoxNzAzODE5ODg1LCJleHAiOjE3MDM5MDYyODV9.3Zkf-QskbbBdiYPS1S3XhB3KhW7IwLFaElco4F5idZI";
+  
 
   const url = "http://nt-manifest-receiver:3001/manifest-receiver/api/v1/response";
   const config = {
@@ -162,7 +157,7 @@ app.post('/api/auth/reqToken', (req, res) => {
 
   if (req.body.username === user.username && req.body.password === user.password) {
     const accessToken = jwt.sign({ username: user.username }, access_secret, { expiresIn: '1d' });
-    const refreshToken = jwt.sign({ username: user.username }, refresh_secret);
+   
     res.json({
       code:0,
       status:"success",
