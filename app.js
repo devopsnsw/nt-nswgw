@@ -41,7 +41,7 @@ async function zipxml(xmlbase64){
   const zip = new jszip();
   zip.file('xml',xmlbase64);
   const xmlbase64zip = await zip.generateAsync({type:"base64"});
-  //console.log(xmlbase64zip);
+  
   return xmlbase64zip;
   
       
